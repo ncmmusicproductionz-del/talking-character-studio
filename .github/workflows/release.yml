@@ -1,0 +1,26 @@
+name: Release
+
+# Push a tag like v5.0.0 to publish a ready-to-run Windows zip on the Releases page.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build zip
+        shell: pwsh
+        run: |
+          $name = "TalkingCharacterStudio-$($env:GITHUB_REF_NAME)-windows"
+          git archive --format=zip --prefix="$name/" -o "$name.zip" HEAD
+          "ZIP=$name.zip" | Out-File -FilePath $env:GITHUB_ENV -Append
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: gh release create $env:GITHUB_REF_NAME $env:ZIP --title "Talking Character Studio $env:GITHUB_REF_NAME" --generate-notes

@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Your own data and caches (never commit these)
+config.json
+output/
+uploads/
+assets/
+backup-v1/
+backup-v2/
+*.part
+*.words.json
+
+# Editors / OS
+.vscode/
+.idea/
+.claude/
+Thumbs.db
+desktop.ini
